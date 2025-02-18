@@ -1,0 +1,18 @@
+@import 'variables.css';
+
+article {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: thin solid var(--colorMain);
+    border-radius: 1rem;
+
+    p {
+        margin: 0;
+    }
+}
+
+.error {
+    padding: 1rem;
+    border: thick solid var(--colorError);
+    border-radius: 1rem;
+}
