@@ -26,6 +26,14 @@ include_once 'views/header.php';
         <ul>
             <li><a href="index.php" title="Homepage">Back</a></li>
         </ul>
+        <form action="edit.php" method="GET" style="display: inline;">
+            <input type="hidden" name="id" value="<?=$employeeID ?>">
+            <button type="submit">Edit</button>
+        </form>
+        <form action="delete.php" method="GET" style="display: inline;">
+            <input type="hidden" name="id" value="<?=$employeeID ?>">
+            <button type="submit">Delete</button>
+        </form>
     </nav>
     <main>
         <?php if (isset($errorMessage)): ?>

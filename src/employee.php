@@ -114,8 +114,24 @@ function validateEmployee(array $employee): array
     if ($lastName === '') {
         $validationErrors[] = 'Last name is mandatory.';
     }
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $validationErrors[] = 'Invalid email format.';
+    }
+
+    if ($birthDate === '') {
+        $validationErrors[] = 'Birth date is mandatory.';
+    } else {
+        try {
+            $dateTime = new DateTime($birthDate);
+            $today = new DateTime();
+            $age = $today->diff($dateTime)->y;
+
+            if ($age < 16) {
+                $validationErrors[] = 'Employee must be minimum 16 years old.';
+            }
+        } catch (Exception $e) {
+            $validationErrors[] = 'Invalid birth date format';
+        }
     }
 
     return $validationErrors;
@@ -149,6 +165,65 @@ function insertEmployee(PDO $pdo, array $employee): bool
         return $stmt->rowCount() === 1;
     } catch (PDOException $e) {
         logText('Error inserting a new employee: ', $e);
+        return false;
+    }
+}
+
+/**
+ * Updates an existing employee in the database
+ * @param PDO $pdo A PDO database connection
+ * @param int $employeeID The ID of the employee to update
+ * @param array $employee An associative array with new employee information
+ * @return bool True if the update was successful, otherwise false 
+ */
+function updateEmployee(PDO $pdo, int $employeeID, array $employee): bool
+{
+    $sql =<<<SQL
+        UPDATE employee
+        SET
+            cFirstName = :firstName,
+            cLastName = :lastName,
+            cEmail = :email,
+            dBirth = :birthDate,
+            nDepartmentID = :departmentID
+        WHERE nEmployeeID = :employeeID
+    SQL;
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':firstName', $employee['first_name']);
+        $stmt->bindValue(':lastName', $employee['last_name']);
+        $stmt->bindValue(':email', $employee['email']);
+        $stmt->bindValue(':birthDate', $employee['birth_date']);
+        $stmt->bindValue(':departmentID', $employee['department']);
+        $stmt->bindValue(':employeeID', $employeeID, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->rowCount() === 1;
+    } catch (PDOException $e) {
+        logText('Error updating employee: ', $e);
+        return false;
+    }
+}
+
+/**
+ * Deletes an employee by ID
+ * @param PDO $pdo A PDO database connection
+ * @param int $employeeID The ID of the employee to delete
+ * @return bool True if the deletion was successful, otherwise false
+ */
+function deleteEmployee(PDO $pdo, int $employeeID): bool 
+{
+    $sql = "DELETE FROM employee WHERE nEmployeeID = :employeeID";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':employeeID', $employeeID, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->rowCount() === 1;
+    } catch (PDOException $e) {
+        logText('Error deleting employee: ', $e);
         return false;
     }
 }
