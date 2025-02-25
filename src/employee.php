@@ -173,4 +173,59 @@ Class Employee extends Database
             return false;
         }
     }
+
+    /**
+     * Updates an employee's information in the database
+     * @param int $employeeID The ID for the employee
+     * @param array $employee The updated employee information
+     * @return bool True if update was successful, otherwise false
+     */
+    function update(int $employeeID, array $employee): bool
+    {
+        $pdo = $this->connect();
+        $sql =<<<SQL
+            UPDATE employee
+            SET cFirstName = :firstName,
+                cLastName = :lastName,
+                cEmail = :email,
+                dBirth = :birthDate,
+                nDepartmentID = :departmentID
+            WHERE nEmployeeID = :employeeID;
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':firstName', $employee['first_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':lastName', $employee['last_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $employee['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':birthDate', $employee['birth_date'], PDO::PARAM_STR);
+            $stmt->bindValue(':departmentID', $employee['department'], PDO::PARAM_INT);
+            $stmt->bindValue(':employeeID', $employeeID, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->rowCount() === 1;
+        } catch (PDOException $e) {
+            Logger::logText('Error updating employee: ', $e);
+            return false;
+        }
+    }
+
+    function delete(int $employeeID): bool 
+    {
+        $pdo = $this->connect();
+        $sql =<<<SQL
+            DELETE FROM employee WHERE nEmployeeID = :employeeID;
+        SQL;
+
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':employeeID', $employeeID, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->rowCount() === 1;
+        } catch (PDOException $e) {
+            Logger::logText('Error deleting employee: ', $e);
+            return false;
+        }
+    }
 }

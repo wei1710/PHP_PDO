@@ -38,6 +38,18 @@ include_once 'views/header.php';
             <p><strong>Email: </strong><?=$employee['email'] ?></p>
             <p><strong>Birth date: </strong><?=$employee['birth_date'] ?></p>
             <p><strong>Department: </strong><?=$employee['department_name'] ?></p>
+
+            <div style="display: flex; gap: 10px;">
+            <form action="edit.php" method="GET">
+                <input type="hidden" name="id" value="<?=$employeeID ?>">
+                <button type="submit">Edit Employee</button>
+            </form>
+
+            <form action="delete.php" method="GET">
+                <input type="hidden" name="id" value="<?=$employeeID ?>">
+                <button type="submit" style="background-color: red; color: white;">Delete Employee</button>
+            </form>
+        </div>
         <?php endif; ?>
     </main>
 
