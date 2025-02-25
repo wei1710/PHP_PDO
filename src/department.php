@@ -7,7 +7,7 @@ Class Department extends Database
 {  
     /**
      * It retrieves all department from the database
-     * @return An associative array with department information,
+     * @return<array> An associative array with department information,
      *         or false if there was an error
      */
     function getAll(): array|false
@@ -33,7 +33,7 @@ Class Department extends Database
     /**
      * It retrieves information regarding one department
      * @param $departmentID The ID of the department whose info to retrieve
-     * @return An associative array with department information,
+     * @return<array> An associative array with department information,
      *         or false if there was an error
      */
     function getByID(int $departmentID): array|false
