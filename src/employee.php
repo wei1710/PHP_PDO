@@ -9,7 +9,7 @@ Class Employee extends Database
 
     /**
      * It retrieves all employees from the database
-     * @return An associative array with employee information,
+     * @return<array> An associative array with employee information,
      *         or false if there was an error
      */
     function getAll(): array|false
@@ -36,7 +36,7 @@ Class Employee extends Database
      * It retrieves employees from the database based 
      * on a text search on the first and last name
      * @param $searchText The text to search in the database
-     * @return An associative array with employee information,
+     * @return<array> An associative array with employee information,
      *         or false if there was an error
      */
     function search(string $searchText): array|false
@@ -66,7 +66,7 @@ Class Employee extends Database
     /**
      * It retrieves information of an employee
      * @param $employeeID The ID of the employee
-     * @return An associative array with employee information,
+     * @return<array> An associative array with employee information,
      *         or false if there was an error
      */
     function getByID(int $employeeID): array|false
