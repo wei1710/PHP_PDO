@@ -3,20 +3,21 @@
 require_once 'src/employee.php';
 require_once 'src/department.php';
 
-$pdo = connect();
-$departments = getAllDepartments($pdo);
+$department = new Department();
+$departments = $department->getAll();
 
 if (!$departments) {
     $errorMessage = 'There was an error while retrieving the department list.';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $validationErrors = validateEmployee($_POST);
+    $employee = new Employee();
+    $validationErrors = $employee->validate($_POST);
 
     if (!empty($validationErrors)) {
         $errorMessage = join(', ', $validationErrors);
     } else {
-        if (insertEmployee($pdo, $_POST)) {
+        if ($employee->insert($_POST)) {
             header('Location: index.php');
             exit;
         }
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// $employee = getEmployeeByID($pdo, $employeeID);
+// $employee = getByID($pdo, $employeeID);
 
 // if (!$employee) {
 //     $errorMessage = 'There was an error retrieving employee information.';

@@ -4,11 +4,11 @@ require_once 'src/employee.php';
 
 $searchText = trim($_GET['search'] ?? '');
 
-$pdo = connect();
+$employee = new Employee();
 if ($searchText === '') {
-    $employees = getAllEmployees($pdo);
+    $employees = $employee->getAll();
 } else {
-    $employees = searchEmployees($pdo, $searchText);
+    $employees = $employee->search($searchText);
 }
 if (!$employees) {
     $errorMessage = 'There was an error while retrieving the list of employees.';
