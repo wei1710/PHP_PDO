@@ -96,7 +96,7 @@ function getEmployeeByID(PDO $pdo, int $employeeID): array|false
 /**
  * It validates employee data before putting it into the database
  * @param $employee Employee data in an associative array
- * @return An array with all validation error messages
+ * @return<array> An array with all validation error messages
  */
 function validateEmployee(array $employee): array
 {
