@@ -1,6 +1,6 @@
 <?php
 
-require_once 'src/employee.php';
+require_once 'classes/Employee.php';
 
 $searchText = trim($_GET['search'] ?? '');
 

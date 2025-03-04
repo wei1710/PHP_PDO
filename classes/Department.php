@@ -1,7 +1,7 @@
 <?php
 
-require_once 'database.php';
-require_once 'logger.php';
+require_once 'Database.php';
+require_once 'Logger.php';
 
 Class Department extends Database 
 {  

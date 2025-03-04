@@ -1,8 +1,8 @@
 <?php
 
-require_once 'database.php';
-require_once 'department.php';
-require_once 'logger.php';
+require_once 'Database.php';
+require_once 'Department.php';
+require_once 'Logger.php';
 
 Class Employee extends Database
 {
