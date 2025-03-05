@@ -1,5 +1,7 @@
 <?php
 
+require_once '../../initialise.php';
+
 $employeeID = (int) ($_GET['id'] ?? 0);
 
 if ($employeeID === 0) {
@@ -7,7 +9,7 @@ if ($employeeID === 0) {
     exit;
 }
 
-require_once 'src/employee.php';
+require_once ROOT_PATH . '/classes/Employee.php';
 
 $employee = new Employee();
 $employee = $employee->getByID($employeeID);
@@ -18,7 +20,8 @@ if (!$employee) {
     $employee = $employee[0];
 }
 
-include_once 'views/header.php';
+$pageTitle = 'View Employee';
+include_once ROOT_PATH . '/public/header.php';
 
 ?>
 
@@ -38,19 +41,7 @@ include_once 'views/header.php';
             <p><strong>Email: </strong><?=$employee['email'] ?></p>
             <p><strong>Birth date: </strong><?=$employee['birth_date'] ?></p>
             <p><strong>Department: </strong><?=$employee['department_name'] ?></p>
-
-            <div style="display: flex; gap: 10px;">
-            <form action="edit.php" method="GET">
-                <input type="hidden" name="id" value="<?=$employeeID ?>">
-                <button type="submit">Edit Employee</button>
-            </form>
-
-            <form action="delete.php" method="GET">
-                <input type="hidden" name="id" value="<?=$employeeID ?>">
-                <button type="submit" style="background-color: red; color: white;">Delete Employee</button>
-            </form>
-        </div>
         <?php endif; ?>
     </main>
 
-<?php include_once 'views/footer.php'; ?>
+<?php include_once ROOT_PATH . '/public/footer.php'; ?>

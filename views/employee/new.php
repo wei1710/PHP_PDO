@@ -1,7 +1,9 @@
 <?php
 
-require_once 'src/employee.php';
-require_once 'src/department.php';
+require_once '../../initialise.php';
+
+require_once ROOT_PATH . '/classes/Employee.php';
+require_once ROOT_PATH . '/classes/Department.php';
 
 $department = new Department();
 $departments = $department->getAll();
@@ -33,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //     $employee = $employee[0];
 // }
 
-include_once 'views/header.php';
+$pageTitle = 'Add Employee';
+include_once ROOT_PATH . '/public/header.php';
 
 ?>
 
@@ -80,4 +83,4 @@ include_once 'views/header.php';
         <?php endif; ?>
     </main>
 
-<?php include_once 'views/footer.php'; ?>
+<?php include_once ROOT_PATH . '/public/footer.php'; ?>

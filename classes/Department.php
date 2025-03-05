@@ -12,7 +12,6 @@ Class Department extends Database
      */
     function getAll(): array|false
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             SELECT nDepartmentID, cName
             FROM department
@@ -20,7 +19,7 @@ Class Department extends Database
         SQL;
         
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             
             return $stmt->fetchAll();
@@ -38,14 +37,13 @@ Class Department extends Database
      */
     function getByID(int $departmentID): array|false
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             SELECT cName
             FROM department
             WHERE nDepartmentID = :departmentID;
         SQL;
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':departmentID', $departmentID);
             $stmt->execute();
 

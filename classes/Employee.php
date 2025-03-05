@@ -14,7 +14,6 @@ Class Employee extends Database
      */
     function getAll(): array|false
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             SELECT nEmployeeID, cFirstName, cLastName, dBirth
             FROM employee
@@ -22,7 +21,7 @@ Class Employee extends Database
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             
             return $stmt->fetchAll();
@@ -41,7 +40,6 @@ Class Employee extends Database
      */
     function search(string $searchText): array|false
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             SELECT nEmployeeID, cFirstName, cLastName, dBirth
             FROM employee
@@ -51,7 +49,7 @@ Class Employee extends Database
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':firstName', "%$searchText%");
             $stmt->bindValue(':lastName', "%$searchText%");
             $stmt->execute();
@@ -71,7 +69,6 @@ Class Employee extends Database
      */
     function getByID(int $employeeID): array|false
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             SELECT 
                 employee.cFirstName AS first_name, 
@@ -86,7 +83,7 @@ Class Employee extends Database
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':employeeID', $employeeID);
             $stmt->execute();
             
@@ -150,7 +147,6 @@ Class Employee extends Database
      */
     function insert(array $employee): bool
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             INSERT INTO employee
                 (cFirstName, cLastName, cEmail, dBirth, nDepartmentID)
@@ -159,7 +155,7 @@ Class Employee extends Database
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':firstName', $employee['first_name']);
             $stmt->bindValue(':lastName', $employee['last_name']);
             $stmt->bindValue(':email', $employee['email']);
@@ -182,7 +178,6 @@ Class Employee extends Database
      */
     function update(int $employeeID, array $employee): bool
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             UPDATE employee
             SET cFirstName = :firstName,
@@ -194,7 +189,7 @@ Class Employee extends Database
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':firstName', $employee['first_name'], PDO::PARAM_STR);
             $stmt->bindValue(':lastName', $employee['last_name'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $employee['email'], PDO::PARAM_STR);
@@ -210,15 +205,19 @@ Class Employee extends Database
         }
     }
 
+    /**
+     * Delete an employee in the database
+     * @param int $employeeID The ID for the employee
+     * @return bool True if delete was successful, otherwise false
+     */
     function delete(int $employeeID): bool 
     {
-        $pdo = $this->connect();
         $sql =<<<SQL
             DELETE FROM employee WHERE nEmployeeID = :employeeID;
         SQL;
 
         try {
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':employeeID', $employeeID, PDO::PARAM_INT);
             $stmt->execute();
 
